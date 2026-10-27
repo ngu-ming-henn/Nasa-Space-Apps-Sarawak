@@ -273,3 +273,23 @@ dashboard already had was kept; code it lacked was taken from those commits:
 **Status:** the SI tab is an optional, local-only module and is not part of the evaluated results. The corpus needs
 verbatim NASA text with checked citations, and the training answers need to come from their passages, before the
 module's answers can be treated as evidence.
+
+## 13. Research AI moved to the `AIModel` branch (2026-10-27)
+
+**What:** the local research AI from section 12 was removed from `main` and kept, complete, on the `AIModel` branch
+(commit 49f63d2). `main` keeps the AI Predictions tab with its two trained models (FLEX droplet, MaCFP PMMA).
+
+**Why:** it needs an NVIDIA GPU and a 3 GB model, which the public Streamlit Cloud server cannot run, so on the
+deployed site it could only show a "not installed" notice. Its corpus is still `UNVERIFIED_SOURCE` (section 12), and
+when it was first run end to end on a local GPU (RTX 3060 Laptop, 2026-10-27):
+- **Refusal:** an off-topic question ("warp drive subspace frequency of the flame") scored 0.354 against the 0.35 retrieval
+  threshold and was answered. The `AIModel` branch now refuses unless the best passage scores ≥ 0.40. The benchmark's
+  refusal question scores 0.432, above a real validation question (0.423), so no threshold separates them; none of
+  the 12 training examples is a refusal.
+- **Wrong answers:** "airflow cut to zero" was answered with the 0.2 m/s Saffire run, and the Artemis atmosphere
+  (34 % O₂ at 56 kPa) was described as "lower oxygen, higher pressure".
+
+**Removed from `main`:** `app/services/local_llm_service.py`, `config/ai_config.json`, `requirement.txt`, `scripts/`,
+`tests/test_local_ai_pipeline.py`, `data/knowledge/`, `data/ai_training/`, `data/vector_index/`, the local AI reports,
+`find_project_root()` and `read_ai_config()` in `app/settings.py`, and `tf-keras` in `requirements.txt` (only the
+language-model stack needed it). The model weights stay git-ignored.

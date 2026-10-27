@@ -16,9 +16,10 @@ data/raw/*.tar.gz
 models/*.keras
 !models/spacecraft_fire_peak_hrr_v1.keras
 models/*.h5
-# Local LLM weights, re-downloaded by scripts/download_model_assets.py (several GB)
+# Local research AI weights (several GB). The research AI and its scripts live on the AIModel branch.
 models/base_models/
 models/embeddings/
+models/local_research_llm/
 
 # 系统与编辑器配置
 .DS_Store
